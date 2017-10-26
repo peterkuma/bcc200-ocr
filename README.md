@@ -19,6 +19,10 @@ directory.
 
 Image size is expected to be 1280 ⨉ 720 pixels.
 
+Images can be extracted from a time lapse AVI file by ffmpeg/avconv:
+
+    ffmpeg -i input.AVI -vsync 0 -codec:v copy -f image2 output_%05d.jpg
+
 ### Command line
 
     bcc200_ocr input
@@ -45,3 +49,4 @@ License
 -------
 
 [MIT](LICENSE.md)
+
