@@ -1,0 +1,52 @@
+#!/usr/bin/env python2
+
+import os
+import numpy as np
+import argparse
+import scipy.misc
+
+POS_X = [576, 592, 609, 624, 656, 672, 704, 720, 752, 768, 800  , 816, 848, 864]
+POS_Y = [704]*len(POS_X)
+SIZE_X = 14
+SIZE_Y = 14
+
+CHAR_DIR = 'aux'
+
+def load_char(file):
+    z = scipy.misc.imread(file, 'L').transpose()
+    z = (z >= 128).astype(np.int32)
+    return z
+
+def load_chars(dir):
+    return [
+        load_char(os.path.join(dir, '%d.png' % i))
+        for i in range(10)
+    ]
+
+def bcc200_ocr(input):
+    ref_chars = load_chars(CHAR_DIR)
+    z = scipy.misc.imread(input, 'L').transpose()
+    z = (z >= 128).astype(np.int32)
+    s = ''
+    for x, y in zip(POS_X, POS_Y):
+        char = z[x:(x + SIZE_X),y:(y + SIZE_Y)]
+        score = [
+            np.sum(char == ref_char)/(1.0*SIZE_X*SIZE_Y)
+            for i, ref_char in enumerate(ref_chars)
+        ]
+        s += '%d' % np.argmax(score)
+    return '%s-%s-%sT%s:%s:%s' % (
+        s[0:4],
+        s[4:6],
+        s[6:8],
+        s[8:10],
+        s[10:12],
+        s[12:14],
+    )
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('input')
+    args = parser.parse_args()
+
+    print(bcc200_ocr(args.input))
