@@ -14,7 +14,7 @@ Requirements
 Usage
 -----
 
-The script expect the `aux` directory to be present in the current working
+The script expects the `aux` directory to be present in the current working
 directory.
 
 Image size is expected to be 1280 ⨉ 720 pixels.
@@ -33,6 +33,8 @@ Image size is expected to be 1280 ⨉ 720 pixels.
 
 Example
 -------
+
+**example.jpg:**
 
 <img src="example.jpg" width="800" />
 
